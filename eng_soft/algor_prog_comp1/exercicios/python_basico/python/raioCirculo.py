@@ -7,5 +7,5 @@ raio = float(input("Digite o valor do raio:\n "))
 # Cálculo da área do círculo
 area = (raio*raio)*3.14
 
-# Print do resultado com variável interna 
+# Print do resultado com variável interna e limitador de decimais
 print(f"A área do círculo é: {area:.2f}")
