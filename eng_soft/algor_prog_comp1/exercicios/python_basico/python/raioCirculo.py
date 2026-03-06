@@ -8,4 +8,4 @@ raio = float(input("Digite o valor do raio:\n "))
 area = (raio*raio)*3.14
 
 # Print do resultado com variável interna 
-print(f"A área do círculo é: {area}")
+print(f"A área do círculo é: {area:.2f}")
