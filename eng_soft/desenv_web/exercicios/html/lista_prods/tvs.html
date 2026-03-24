@@ -12,23 +12,58 @@
         <h2>Televisões</h2>
         <a class="link" href="produtos.html">Voltar</a>
      </fieldset>
+
      <div class="main">
-     <ul id="primary-list">
-        <li>
-           <img src="img/tv_sansung.jpg" alt="Tv modelo Sansung" class="img"/>
-           <h3 id="minor-title">Modelo: Sansung</h3>
-           <h3 id="minor-title">R$ 2.000,00</h3>
-           <h3 id="minor-title">R$ 200,00 em 10x</h3>
-           <a class="link" href="https://www.samsung.com/br/tvs/all-tvs/">Detalhes</a>
-        </li>
-        <li>
-           <img src="img/tv_lg.jpg" alt="Tv modelo LG" class="img"/>
-           <h3 id="minor-title">Modelo: LG</h3>
-           <h3 id="minor-title">R$ 5.000,00</h3>
-           <h3 id="minor-title">R$ 500,00 em 10x</h3>
-           <a class="link" href="https://www.lg.com/br/?srsltid=AfmBOoq3Sjp4jc006Rb1r3SNcJIwxDf4k2G8-Cs4v-DUVklfQSfA93nj">Detalhes</a>
-        </li>
-     </ul>
+     <table class="tabela" align="center" border="1" id="primary-list">
+        <tr>
+           <td>
+              <img class="imagem" src="img/tv_sansung.jpg" alt="Tv modelo Sansung" class="img"/>
+           </td>
+           <td id="minor-title">Modelo: <br>Sansung</td>
+           <td id="minor-title">R$ 2.000,00</td>
+           <td id="minor-title">R$ 200,00 em 10x</td>
+           <td>
+              <a class="link" href="https://www.samsung.com/br/tvs/all-tvs/">Detalhes</a>
+           </td>
+        </tr>
+        <tr>
+           <td>
+              <img class="imagem" src="img/tv_lg.jpeg" alt="Tv modelo LG" class="img"/>
+           </td>
+           <td id="minor-title">Modelo: LG</td>
+           <td id="minor-title">R$ 5.000,00</td>
+           <td id="minor-title">R$ 500,00 em 10x</td>
+           <td>
+              <a class="link" href="https://www.lg.com/br/?srsltid=AfmBOoq3Sjp4jc006Rb1r3SNcJIwxDf4k2G8-Cs4v-DUVklfQSfA93nj">Detalhes</a>
+           </td>
+        </tr>
+      </table>
     </div>
+    <fieldset class="campo">
+      <h3>Solicitação de modelo de Tv: </h3>
+      <form class="form" method="POST">
+        <label>Nome: </label>
+        <input type="text" name="nome" id="nome" required placeholder="João da Silva">
+        <label>Email: </label>
+        <input type="email" name="email" id="email" required placeholder="Email@gmail">
+        <br><br>
+        <label>Tv sugerida: </label>
+        <input list="listaTv" name="tv" id="tv" required placeholder="Galaxy A2">
+        <br><br>
+        <datalist id="listaTv">
+           <option value="Lg">Tv Lg</option>
+           <option value="Galaxy">Tv Galaxy A5</option>
+           <option value="Xuxa">Tv da Xuxa</option>
+           <option value="Corinthians">Tv do Timão Eo</option>
+        </datalist>
+        <button type="reset">Limpar</button>
+        <button type="submit">Enviar</button>
+      </form>
+   </fieldset>
+   <details>
+      <summary>
+         Principais Dúvidas
+      </summary>
+   </details>
 </body>
 </html>

@@ -6,7 +6,7 @@ body{
     height: 15vh;
     font-size:14px;
     text-align: center;
-    background-color: rgb(209, 195, 0);
+    background-color: rgb(235, 224, 72);
 }
 
 .main{
@@ -41,4 +41,19 @@ body{
 
 #primary-list{
     list-style-type: none;
+    align-self: center;
+}
+
+.imagem{
+    width: 200px;
+}
+
+.tabela{
+    transform:translateY(100px)
+}
+
+.campo{
+    transform: translate(650px,160px);
+    width: 600px;
+    
 }
