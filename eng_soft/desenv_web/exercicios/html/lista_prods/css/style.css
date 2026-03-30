@@ -2,24 +2,58 @@ body{
     background-color:rgb(255, 252, 230);
 }
 
+.submenu{
+    height: 15vh;
+    font-size:14px;
+    text-align: center;
+    background-color: rgb(235, 224, 72);
+}
+
 .main{
     font-size:14px;
+    text-align: center;
+    align-content: center;
 }
 
 .titulo{
     text-align: center;
+    font-size:30px;
 }
 
 .titulo::first-letter{
     text-transform: uppercase
 }
 
+.link{
+    color:rgb(179, 29, 29)
+}
+ 
 .link:hover{
     text-decoration: none;
+    color: rgb(173, 113, 0);
 }
 
 #minor-title{
     font-size:16px;
     text-transform:uppercase;
     font-weight:bold;
+}
+
+#primary-list{
+    list-style-type: none;
+    align-self: center;
+}
+
+.imagem{
+    width: 200px;
+}
+
+.tabela{
+    transform:translateY(100px)
+}
+
+.campo{
+    transform: translate(650px,160px);
+    width: 600px;
+    
 }
