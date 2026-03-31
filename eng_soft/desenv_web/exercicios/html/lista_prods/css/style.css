@@ -1,6 +1,7 @@
 body{
     background-color:rgb(255, 252, 230);
     overflow-y: scroll;
+    height: 130vh;
 }
 
 .submenu{
@@ -59,12 +60,15 @@ body{
     border-radius: 5px;
 }
 
+.tabela tr:hover{
+    background-color: rgb(255, 241, 224);
+}
 
 .campo{
     transform: translate(140%,200px);
     text-align: left;
     width: 550px;
-    background-color: rgb(252, 252, 252);
+    background-color: rgb(255, 255, 255);
 }
 
 .aura{
@@ -78,4 +82,5 @@ body{
 
 .faq{
     margin-left: 30px;
+    font-size: 20px;
 }
