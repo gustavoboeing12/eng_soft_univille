@@ -26,7 +26,7 @@ body{
 }
 
 .link{
-    color:rgb(179, 29, 29)
+    color:rgb(179, 29, 29);
 }
  
 .link:hover{
@@ -61,8 +61,21 @@ body{
 
 
 .campo{
-    transform: translate(80%,200px);
+    transform: translate(140%,200px);
     text-align: left;
     width: 550px;
     background-color: rgb(252, 252, 252);
+}
+
+.aura{
+    opacity:0;
+    transition: 3s
+}
+
+.aura:hover{
+    opacity:100;
+}
+
+.faq{
+    margin-left: 30px;
 }
