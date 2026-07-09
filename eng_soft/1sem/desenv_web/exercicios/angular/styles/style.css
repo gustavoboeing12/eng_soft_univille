@@ -1,0 +1,386 @@
+/* Variáveis globais */
+:root {
+  --bg: #0b1020;
+  --card: #141c33;
+  --text: #f1f5ff;
+  --muted: #b7bfd3;
+  --primary: #7c5cff;
+  --border: rgba(255,255,255,0.1);
+
+  --radius: 16px;
+  --container: 1100px;
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+
+  /* Faz padding e border não aumentarem o tamanho do elemento */
+  box-sizing: border-box;
+}
+
+/* Configurações globais */
+html {
+  font-size: 16px;
+
+  /* Rolagem suave */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+
+  /* Espaçamento entre linhas */
+  line-height: 1.6;
+}
+
+/* Configuração padrão de imagens */
+img {
+  display: block;
+
+  /* Imagem nunca ultrapassa o container */
+  max-width: 100%;
+
+  border-radius: var(--radius);
+}
+
+/* Remove estilo padrão dos links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Acessibilidade: foco para navegação por teclado */
+a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Container centralizador */
+.container {
+  width: 100%;
+  max-width: var(--container);
+
+  /* Centraliza conteúdo */
+  margin: auto;
+
+  padding: 0 1rem;
+}
+
+/* -------- Acessibilidade -------- */
+
+/* Link oculto para navegação por TAB */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+
+  background: #fff;
+  color: #000;
+
+  padding: 0.7rem;
+}
+
+/* Faz aparecer ao focar */
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* -------- Header -------- */
+
+.site-header {
+  /* Header fixo ao rolar */
+  position: sticky;
+  top: 0;
+
+  background: rgba(11,16,32,0.95);
+
+  border-bottom: 1px solid var(--border);
+}
+
+/* Flexbox para alinhamento */
+.header-inner,
+.brand,
+.nav-list,
+.footer-actions,
+.footer-bottom-inner {
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Espaçamento horizontal */
+.header-inner,
+.footer-bottom-inner {
+  justify-content: space-between;
+}
+
+.header-inner {
+  padding: 1rem 0;
+}
+
+/* Espaçamento entre itens */
+.brand,
+.nav-list,
+.footer-actions {
+  gap: 0.8rem;
+}
+
+/* Lista do menu */
+.nav-list {
+  list-style: none;
+
+  /* Permite quebra de linha */
+  flex-wrap: wrap;
+}
+
+/* Botões e links */
+.nav-link,
+.footer-pill,
+.btn {
+  padding: 0.6rem 1rem;
+
+  border-radius: 999px;
+
+  /* Transição suave */
+  transition: 0.2s;
+}
+
+/* Hover */
+.nav-link:hover,
+.footer-pill:hover {
+  background: rgba(124,92,255,0.15);
+}
+
+/* Logo */
+.brand-logo {
+  width: 44px;
+  height: 44px;
+}
+
+.brand-name {
+  font-weight: bold;
+}
+
+/* -------- Hero e Sections -------- */
+
+.hero,
+.section {
+  padding: 3rem 0;
+}
+
+/* Layout mobile first */
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2rem;
+}
+
+/* Título responsivo */
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+
+  line-height: 1.1;
+}
+
+/* Textos secundários */
+.hero-text,
+.section-subtitle,
+.skill-card p,
+.benefit-card p,
+.footer-text,
+.copyright {
+  color: var(--muted);
+}
+
+.hero-text {
+  margin: 1rem 0;
+}
+
+/* -------- Botão -------- */
+
+.btn {
+  display: inline-block;
+
+  background: var(--primary);
+
+  font-weight: bold;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* -------- Sections -------- */
+
+.section-alt {
+  background: rgba(255,255,255,0.03);
+}
+
+.section-header {
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Cards -------- */
+
+.prose-card,
+.skill-card,
+.benefit-card {
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  padding: 1.2rem;
+
+  /* Animação */
+  animation: fade 0.5s ease;
+}
+
+/* Grid dos cards */
+.cards-grid,
+.benefits-grid {
+  display: grid;
+
+  gap: 1rem;
+
+  margin-top: 1.5rem;
+}
+
+/* Mobile First:
+1 coluna inicialmente */
+.cards-grid {
+  grid-template-columns: 1fr;
+}
+
+.benefits-grid {
+  grid-template-columns: 1fr;
+}
+
+/* Hover dos cards */
+.skill-card:hover,
+.benefit-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Espaçamento dos títulos */
+.skill-card h3,
+.benefit-card h3,
+.footer-title {
+  margin-bottom: 0.6rem;
+}
+
+.benefit-meta {
+  margin-top: 1rem;
+}
+
+/* -------- Footer -------- */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+
+  padding-top: 2rem;
+}
+
+/* Layout do footer */
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+
+  margin-top: 2rem;
+
+  padding: 1rem 0;
+}
+
+/* -------- Animação -------- */
+
+@keyframes fade {
+  from {
+    opacity: 0;
+
+    /* Elemento começa levemente abaixo */
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    /* Volta para posição original */
+    transform: translateY(0);
+  }
+}
+
+/* -------- Tablet -------- */
+
+@media (min-width: 700px) {
+
+  /* Hero lado a lado */
+  .hero-inner {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .hero-copy,
+  .hero-media {
+    flex: 1;
+  }
+
+  /* Grid com 2 colunas */
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Grid com 3 colunas */
+  .benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Footer horizontal */
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .nav-list {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* -------- Desktop -------- */
+
+@media (min-width: 1024px) {
+
+  /* Cards com 3 colunas */
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* -------- Acessibilidade -------- */
+
+/* Remove animações para usuários sensíveis a movimento */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
