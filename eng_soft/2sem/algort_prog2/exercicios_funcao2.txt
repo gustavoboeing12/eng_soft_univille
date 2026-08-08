@@ -1,0 +1,52 @@
+Exercícios Básicos com Funções em Python
+
+1. Par ou Ímpar
+
+Crie uma função chamada 'eh_par(numero)' que recebe um número inteiro como parâmetro e retorna 'True' se o número for par e 'False' caso contrário.
+
+2. Maior de Dois Números
+
+Crie uma função chamada 'maior_de_dois(a, b)' que recebe dois números inteiros ou flutuantes e retorna o maior entre eles. Se forem iguais, pode retornar qualquer um dos dois.
+
+3. Classificação por Idade
+
+Crie uma função chamada 'classifica_idade(idade)' que recebe a idade de uma pessoa e retorna uma string com a sua categoria:
+
+* **"Criança"** para idades menores que 12 anos.
+* **"Adolescente"** para idades entre 12 e 17 anos.
+* **"Adulto"** para idades de 18 a 59 anos.
+* **"Idoso"** para idades a partir de 60 anos.
+
+4. Calculadora Simples
+
+Crie uma função chamada 'calculadora(num1, num2, operacao)' que recebe dois números e uma string indicando a operação ('"+"', '"-"', '"*"' ou '"/"'). A função deve realizar o cálculo correspondente e retornar o resultado. Caso receba uma operação inválida ou uma divisão por zero, trate esse cenário com uma mensagem apropriada.
+
+5. Contagem Regressiva
+
+Crie uma função chamada 'contagem_regressiva(inicio)' que recebe um número inteiro positivo e imprime na tela uma contagem regressiva a partir dele até o número **0**, utilizando uma estrutura de repetição ('while' ou 'for').
+
+
+6. Soma de 1 a N
+
+Crie uma função chamada 'soma_ate_n(n)' que recebe um número inteiro positivo $n$ e calcula a soma de todos os números inteiros de 1 até $n$ utilizando um laço de repetição. A função deve retornar o total somado.
+
+7. Verificador de Múltiplos
+
+Crie uma função chamada 'eh_multiplo(a, b)' que recebe dois inteiros e retorna 'True' se $a$ for múltiplo de $b$ (ou seja, se a divisão de $a$ por $b$ tiver resto zero) e 'False' caso contrário.
+
+8. Fatorial de um Número
+
+Crie uma função chamada 'fatorial(n)' que recebe um número inteiro não negativo $n$ e calcula o seu fatorial (exemplo: $5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$) utilizando uma estrutura de repetição. A função deve retornar o resultado.
+
+9. Média de Notas e Situação
+
+Crie uma função chamada 'verificar_aprovacao(nota1, nota2, nota3)' que calcula a média aritmética de três notas. Com base na média calculada, retorne:
+
+* **"Aprovado"** se a média for maior ou igual a 7.0.
+* **"Recuperação"** se a média estiver entre 5.0 e 6.9.
+* **"Reprovado"** se a média for menor que 5.0.
+
+10. Quantidade de Pares em um Intervalo
+
+Crie uma função chamada contar_pares(inicio, fim)' que recebe dois inteiros representando um intervalo e utiliza um laço de repetição para contar quantos números pares existem dentro desse intervalo (incluindo os limites 'inicio' e 'fim'). A função deve retornar essa contagem.
+
