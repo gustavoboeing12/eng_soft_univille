@@ -1,11 +1,3 @@
-﻿-- =============================================================
--- BANCO DE DADOS I | MASSA DE DADOS PARA PRATICAR DML | SQL SERVER
--- Compativel com SQL Server 2016+ e SSMS.
--- Base INDEPENDENTE: nao altera o banco Aula_Integridade.
--- ATENCAO: executar novamente RECRIA as 3 tabelas de Aula_DML.
---              Perdera mudancas feitas na base de treinamento.
--- =============================================================
-
 -- 1. CRIAR BANCO (caso nao exista)
 IF DB_ID(N'Aula_DML') IS NULL
 BEGIN
@@ -18,6 +10,7 @@ GO
 
 -- 2. LIMPAR APENAS AS TABELAS DE TREINAMENTO
 -- Ordem importa: Matricula depende de Aluno e Turma.
+DROP TABLE IF EXISTS dbo.Pagamento;
 DROP TABLE IF EXISTS dbo.Matricula;
 DROP TABLE IF EXISTS dbo.Turma;
 DROP TABLE IF EXISTS dbo.Aluno;
@@ -184,12 +177,148 @@ SELECT COUNT(*) AS total_matriculas FROM dbo.Matricula;
 SELECT COUNT(*) AS matriculas_sem_nota
 FROM dbo.Matricula WHERE nota IS NULL;
 
--- Consulta de exemplo: alunos, turmas e notas
-SELECT a.ra, a.nome AS aluno, t.nome AS turma, m.nota
-FROM dbo.Matricula AS m
-INNER JOIN dbo.Aluno AS a ON a.ra = m.ra_aluno
-INNER JOIN dbo.Turma AS t ON t.id_turma = m.id_turma
-ORDER BY a.nome, t.nome;
 
--- FIM DA PREPARACAO.
--- Para praticar UPDATE/DELETE, use o outro arquivo de exercicios.
+
+-- AMPLIACAO DA BASE: campos de data/localidade, turno e pagamentos
+-- 1. Novos campos em Aluno, sem remover ou recriar a tabela
+IF COL_LENGTH('dbo.Aluno', 'data_nascimento') IS NULL
+    ALTER TABLE dbo.Aluno ADD data_nascimento DATE NULL;
+IF COL_LENGTH('dbo.Aluno', 'cidade') IS NULL
+    ALTER TABLE dbo.Aluno ADD cidade VARCHAR(60) NULL;
+IF COL_LENGTH('dbo.Aluno', 'uf') IS NULL
+    ALTER TABLE dbo.Aluno ADD uf CHAR(2) NULL;
+GO
+
+-- 2. Dados ficticios coerentes com a idade em outubro de 2026.
+--    NAO se deve inferir uma data de nascimento real apenas pela idade.
+--    Esta data e apenas uma simulacao para os exercicios da turma.
+UPDATE dbo.Aluno
+SET data_nascimento = DATEFROMPARTS(
+    2026 - idade,
+    ((ra - 2001) % 9) + 1,
+    (((ra - 2001) * 3) % 27) + 1
+)
+WHERE ra BETWEEN 2001 AND 2030
+  AND idade BETWEEN 18 AND 40
+  AND data_nascimento IS NULL;
+
+UPDATE dbo.Aluno
+SET cidade = CASE (ra % 6)
+    WHEN 0 THEN 'Joinville'
+    WHEN 1 THEN 'Blumenau'
+    WHEN 2 THEN 'Curitiba'
+    WHEN 3 THEN 'Florianopolis'
+    WHEN 4 THEN 'Porto Alegre'
+    ELSE 'Sao Paulo' END
+WHERE ra BETWEEN 2001 AND 2030 AND cidade IS NULL;
+
+UPDATE dbo.Aluno
+SET uf = CASE cidade
+    WHEN 'Joinville' THEN 'SC'
+    WHEN 'Blumenau' THEN 'SC'
+    WHEN 'Curitiba' THEN 'PR'
+    WHEN 'Florianopolis' THEN 'SC'
+    WHEN 'Porto Alegre' THEN 'RS'
+    WHEN 'Sao Paulo' THEN 'SP'
+    ELSE NULL END
+WHERE ra BETWEEN 2001 AND 2030 AND uf IS NULL;
+GO
+
+-- 3. Novos campos em Turma
+IF COL_LENGTH('dbo.Turma', 'turno') IS NULL
+    ALTER TABLE dbo.Turma ADD turno VARCHAR(20) NULL;
+IF COL_LENGTH('dbo.Turma', 'carga_horaria') IS NULL
+    ALTER TABLE dbo.Turma ADD carga_horaria INT NULL;
+GO
+
+UPDATE dbo.Turma
+SET turno = CASE
+    WHEN id_turma IN (10, 30, 50, 70) THEN 'Noite'
+    WHEN id_turma IN (20, 60) THEN 'Manha'
+    ELSE 'Tarde' END
+WHERE id_turma IN (10,20,30,40,50,60,70,80) AND turno IS NULL;
+
+UPDATE dbo.Turma
+SET carga_horaria = CASE
+    WHEN id_turma IN (10,60) THEN 80
+    WHEN id_turma IN (20,30,50,70) THEN 60
+    ELSE 40 END
+WHERE id_turma IN (10,20,30,40,50,60,70,80) AND carga_horaria IS NULL;
+GO
+
+-- 4. Nova tabela: Pagamento. Ligada a Aluno por chave estrangeira.
+--    Nao e necessario usar JOIN para resolver os exercicios.
+IF OBJECT_ID(N'dbo.Pagamento', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Pagamento (
+        id_pagamento INT NOT NULL,
+        ra_aluno INT NOT NULL,
+        data_vencimento DATE NOT NULL,
+        data_pagamento DATE NULL,
+        valor DECIMAL(10,2) NOT NULL,
+        situacao VARCHAR(12) NOT NULL,
+        forma_pagamento VARCHAR(15) NULL,
+        CONSTRAINT PK_Pagamento PRIMARY KEY (id_pagamento),
+        CONSTRAINT FK_Pagamento_Aluno FOREIGN KEY (ra_aluno)
+            REFERENCES dbo.Aluno(ra),
+        CONSTRAINT CK_Pagamento_Valor CHECK (valor > 0),
+        CONSTRAINT CK_Pagamento_Situacao
+            CHECK (situacao IN ('PAGO','PENDENTE','CANCELADO')),
+        CONSTRAINT CK_Pagamento_Data
+            CHECK ((situacao = 'PAGO' AND data_pagamento IS NOT NULL)
+                OR (situacao IN ('PENDENTE','CANCELADO')
+                    AND data_pagamento IS NULL))
+    );
+END;
+GO
+
+-- 5. Massa de pagamentos ficticios dos meses 07, 08 e 09/2026.
+--    Ate 25 alunos x 3 meses = 75 registros.
+--    Idempotente: so insere a parcela caso o ID ainda nao exista.
+DECLARE @mes INT = 7;
+WHILE @mes <= 9
+BEGIN
+    INSERT INTO dbo.Pagamento
+        (id_pagamento, ra_aluno, data_vencimento, data_pagamento,
+         valor, situacao, forma_pagamento)
+    SELECT
+        (a.ra - 2000) * 100 + @mes AS id_pagamento,
+        a.ra,
+        DATEFROMPARTS(2026, @mes, 10),
+        CASE
+            WHEN (a.ra + @mes) % 8 = 0 THEN NULL
+            WHEN (a.ra + @mes) % 5 = 0 THEN NULL
+            ELSE DATEADD(DAY, (a.ra % 8) - 4,
+                    DATEFROMPARTS(2026, @mes, 10))
+        END,
+        CAST(400 + (a.ra % 7) * 95 + (@mes - 7) * 20 AS DECIMAL(10,2)),
+        CASE
+            WHEN (a.ra + @mes) % 8 = 0 THEN 'CANCELADO'
+            WHEN (a.ra + @mes) % 5 = 0 THEN 'PENDENTE'
+            ELSE 'PAGO'
+        END,
+        CASE
+            WHEN (a.ra + @mes) % 8 = 0 THEN NULL
+            WHEN (a.ra + @mes) % 5 = 0 THEN NULL
+            WHEN a.ra % 3 = 0 THEN 'PIX'
+            WHEN a.ra % 3 = 1 THEN 'CARTAO'
+            ELSE 'BOLETO'
+        END
+    FROM dbo.Aluno AS a
+    WHERE a.ra BETWEEN 2001 AND 2025
+      AND NOT EXISTS (
+          SELECT 1 FROM dbo.Pagamento AS p
+          WHERE p.id_pagamento = (a.ra - 2000) * 100 + @mes
+      );
+    SET @mes = @mes + 1;
+END;
+GO
+
+-- 6. Conferencias. Os resultados podem mudar se a turma editou a massa.
+SELECT COUNT(*) AS total_alunos FROM dbo.Aluno;
+SELECT COUNT(*) AS total_turmas FROM dbo.Turma;
+SELECT COUNT(*) AS total_matriculas FROM dbo.Matricula;
+SELECT COUNT(*) AS total_pagamentos FROM dbo.Pagamento;
+SELECT TOP (5) ra, nome, data_nascimento, cidade, uf FROM dbo.Aluno ORDER BY ra;
+SELECT id_turma, nome, turno, carga_horaria FROM dbo.Turma ORDER BY id_turma;
+SELECT TOP (10) * FROM dbo.Pagamento ORDER BY id_pagamento;
